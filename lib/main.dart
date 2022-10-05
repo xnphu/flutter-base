@@ -1,4 +1,6 @@
 import 'package:base/domain/usecase/index.dart';
+import 'package:base/presentation/page/main/main_page.dart';
+import 'package:base/presentation/page/splash/splash_page.dart';
 import 'package:base/presentation/resources/index.dart';
 import 'package:base/presentation/utils/index.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -94,8 +96,10 @@ class MyAppState extends State<MyApp> {
                     return LoginPage(
                       pageTag: PageTag.login,
                     );
-                  case AppLaunchTag.home:
-                    return HomePage(pageTag: PageTag.home);
+                  case AppLaunchTag.splash:
+                    return SplashPage(pageTag: PageTag.splash);
+                  case AppLaunchTag.main:
+                    return MainPage(pageTag: PageTag.main);
                   default:
                     return loadingView;
                 }

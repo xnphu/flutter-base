@@ -22,6 +22,7 @@ class ApplicationState extends BaseState {
 const APP_LAUNCH_ERROR_MESSAGE = "application cannot start";
 
 enum AppLaunchTag {
+  main,
   splash,
   login,
   loginBySns,

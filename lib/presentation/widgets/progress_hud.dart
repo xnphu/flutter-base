@@ -16,7 +16,7 @@ class ProgressHud extends StatelessWidget {
     this.opacity = 0.3,
     this.color = Colors.transparent,
     this.progressIndicator = const CircularProgressIndicator(
-      valueColor:AlwaysStoppedAnimation<Color>(Colors.white),
+      valueColor:AlwaysStoppedAnimation<Color>(Colors.blue),
     ),
     // this.progressIndicator = const CupertinoActivityIndicator(
     //   radius: 20,

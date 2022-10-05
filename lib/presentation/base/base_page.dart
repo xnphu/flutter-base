@@ -43,7 +43,7 @@ abstract class BasePageState<
 
   bool get willListenApplicationEvent => false;
 
-  bool get usingAppBackgroundPhoto => true;
+  bool get usingAppBackgroundPhoto => false;
 
   bool get resizeToAvoidBottomInset => false;
 

@@ -1,3 +1,4 @@
+import 'package:base/presentation/page/main/index.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:base/data/local/index.dart';
 import 'package:base/data/remote/api/index.dart';
@@ -19,6 +20,7 @@ import 'data/net/index.dart';
 import 'domain/provider/index.dart';
 import 'domain/repository/index.dart';
 import 'domain/usecase/index.dart';
+import 'presentation/page/splash/index.dart';
 import 'presentation/utils/environment_provider_impl.dart';
 
 GetIt injector = GetIt.asNewInstance();
@@ -64,16 +66,24 @@ initInjector() {
             injector(),
             injector(),
           ));
+  injector.registerFactory<SplashRepository>(
+      () => SplashRepositoryImpl(injector()));
+
 //Bloc
   injector.registerFactory<LoginBloc>(
       () => LoginBloc(injector(), injector(), injector(), injector()));
+  injector.registerFactory<SplashBloc>(() => SplashBloc(injector()));
   injector.registerFactory<HomeBloc>(() => HomeBloc());
+  injector.registerFactory<MainBloc>(() => MainBloc());
 
   // router
   injector.registerFactory<LoginRouter>(() => LoginRouter());
+  injector.registerFactory<SplashRouter>(() => SplashRouter());
   injector.registerFactory<HomeRouter>(() => HomeRouter());
+  injector.registerFactory<MainRouter>(() => MainRouter());
   // use case
   injector.registerFactory<AuthenticationUseCases>(
       () => AuthenticationUseCaseImpl(injector()));
   injector.registerFactory<LogoutUseCase>(() => LogoutUseCaseImpl(injector()));
+  injector.registerFactory<SplashUseCases>(() => SplashUseCaseImpl(injector()));
 }

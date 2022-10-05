@@ -48,19 +48,19 @@ class ApplicationBloc extends BaseBloc<ApplicationEvent, ApplicationState> {
 
   _onAppLaunchHandler(
       AppLaunched event, Emitter<ApplicationState> emitter) async {
-    AppLaunchTag tag = AppLaunchTag.login;
+    AppLaunchTag tag = AppLaunchTag.splash;
     emitter(state.copyWith(status: LoadingStatus.loading));
     try {
       var isLogged = await repository.isLogged();
       if (isLogged) {
-        tag = AppLaunchTag.rememberLogin;
+        tag = AppLaunchTag.main;
       }
       emitter(state.copyWith(tag: tag));
     } on RemoteException catch (ex) {
       emitter(state.copyWith(
           failure: PlatformFailure(msg: ex.errorMessage),
           tag: (ex.errorCode ?? 0) == ACCESS_TOKEN_EXPIRED_CODE
-              ? AppLaunchTag.login
+              ? AppLaunchTag.splash
               : tag));
     } catch (ex) {
       emitter(state.copyWith(

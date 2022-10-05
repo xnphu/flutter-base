@@ -8,14 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'index.dart';
 
-class HomePage extends BasePage {
-  HomePage({required PageTag pageTag}) : super(tag: pageTag);
+class SplashPage extends BasePage {
+  SplashPage({required PageTag pageTag}) : super(tag: pageTag);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _SplashPageState createState() => _SplashPageState();
 }
 
-class _HomePageState extends BasePageState<HomeBloc, HomePage, HomeRouter> {
+class _SplashPageState extends BasePageState<SplashBloc, SplashPage, SplashRouter> {
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatchEvent(GetTokenString());
+  }
+  
   @override
   Widget buildLayout(BuildContext context, BaseBloc<BaseEvent, dynamic> bloc) {
     return Scaffold(
@@ -23,7 +29,9 @@ class _HomePageState extends BasePageState<HomeBloc, HomePage, HomeRouter> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Text('Home')),
+            Center(
+              child: Text('Splash'),
+            ),
           ],
         ),
       ),

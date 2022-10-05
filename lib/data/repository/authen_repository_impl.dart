@@ -18,7 +18,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       {required ParamsLogin params}) async {
     final response = await _authenApi.login(params: params);
     _authenCache.putToken(
-        TokenModel(token: response.data!.token!), params.password);
+        TokenModel(token: response.data!.token!));
     return response;
   }
 
