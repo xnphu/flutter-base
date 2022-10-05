@@ -1,5 +1,6 @@
 import 'package:base/presentation/base/index.dart';
 import 'package:base/presentation/navigator/page_navigator.dart';
+import 'package:base/presentation/widgets/persistent_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,186 +14,189 @@ class MainPage extends BasePage {
 }
 
 class _MainPageState extends BasePageState<MainBloc, MainPage, MainRouter> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  int pageIndex = 0;
-
-  final pages = [
-    const Page(pageName: 'Page 1'),
-    const Page(pageName: 'Page 2'),
-    const Page(pageName: 'Page 3'),
-    const Page(pageName: 'Page 4'),
-  ];
+  final _tab1navigatorKey = GlobalKey<NavigatorState>();
+  final _tab2navigatorKey = GlobalKey<NavigatorState>();
+  final _tab3navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget buildLayout(BuildContext context, BaseBloc<BaseEvent, dynamic> bloc) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawerEnableOpenDragGesture: false,
-      drawer: SafeArea(
-        child: Container(
-          width: double.infinity,
-          child: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(onTap: () => {
-                        if(_scaffoldKey.currentState?.isDrawerOpen?? false) {
-                          _scaffoldKey.currentState?.closeDrawer()
-                        }
-                      },child: Text('X'))
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          ),
-      ),
-      appBar: AppBar(
-        leading: InkWell(
-          onTap: () => _scaffoldKey.currentState?.openDrawer(),
-          child: Icon(
-            Icons.menu,
-            color: Theme.of(context).primaryColor,
-          ),
+    return PersistentBottomBarScaffold(
+      items: [
+        PersistentTabItem(
+          tab: TabPage1(),
+          icon: Icons.home,
+          title: 'Home',
+          navigatorkey: _tab1navigatorKey,
         ),
-        title: Text(
-          'Lao Động',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 25,
-            fontWeight: FontWeight.w600,
-          ),
+        PersistentTabItem(
+          tab: TabPage2(),
+          icon: Icons.search,
+          title: 'Search',
+          navigatorkey: _tab2navigatorKey,
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-      floatingActionButton: Builder(builder: (context) {
-        return FloatingActionButton(
-          onPressed: () {},
-        );
-      }),
-      body: pages[pageIndex],
-      bottomNavigationBar: buildMyNavBar(context),
+        PersistentTabItem(
+          tab: TabPage3(),
+          icon: Icons.person,
+          title: 'Profile',
+          navigatorkey: _tab3navigatorKey,
+        ),
+      ],
     );
   }
+}
 
-  Widget buildMyNavBar(BuildContext context) {
-    return Container(
-      height: 60,
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+class TabPage1 extends StatelessWidget {
+  const TabPage1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('TabPage1 build');
+    return Scaffold(
+      appBar: AppBar(title: Text('Tab 1')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Tab 1'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page1('Tab1')));
+                },
+                child: Text('Go to page1'))
+          ],
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 0;
-              });
-            },
-            icon: pageIndex == 0
-                ? const Icon(
-                    Icons.home_filled,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.home_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 1;
-              });
-            },
-            icon: pageIndex == 1
-                ? const Icon(
-                    Icons.work_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.work_outline_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 2;
-              });
-            },
-            icon: pageIndex == 2
-                ? const Icon(
-                    Icons.widgets_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.widgets_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 3;
-              });
-            },
-            icon: pageIndex == 3
-                ? const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-        ],
       ),
     );
   }
 }
 
-class Page extends StatelessWidget {
-  final String pageName;
-  const Page({Key? key, required this.pageName}) : super(key: key);
+class TabPage2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print('TabPage2 build');
+    return Scaffold(
+      appBar: AppBar(title: Text('Tab 2')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Tab 2'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page2('tab2')));
+                },
+                child: Text('Go to page2'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TabPage3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print('TabPage3 build');
+    return Scaffold(
+      appBar: AppBar(title: Text('Tab 3')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Tab 3'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page2('tab3')));
+                },
+                child: Text('Go to page2'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Page1 extends StatelessWidget {
+  final String inTab;
+
+  const Page1(this.inTab);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.white,
-      child: Center(
-        child: Text(
-          pageName,
-          style: getTextStyle(
-            color: AppColors.black66,
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 1')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('in $inTab Page 1'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page2(inTab)));
+                },
+                child: Text('Go to page2'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  final String inTab;
+
+  const Page2(this.inTab);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 2')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('in $inTab Page 2'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page3(inTab)));
+                },
+                child: Text('Go to page3'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  final String inTab;
+
+  const Page3(this.inTab);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 3')),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('in $inTab Page 3'),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Go back'))
+          ],
         ),
       ),
     );
